@@ -1,0 +1,36 @@
+<header class="main-header">
+    <nav class="container main-nav">
+        <a href="/" class="nav-logo">
+            <img src="/images/logo.png" alt="Sword Emporium Logo" class="logo-image">
+            <span>Sword Emporium</span>
+        </a>
+        <div class="nav-center">
+            <div class="nav-links">
+                <a href="/">Beranda</a>
+                <a href="/products">Produk</a>
+                <a href="/search">Cari</a>
+                <a href="/contact">Kontak</a>
+                @if(session.get('isLoggedIn') && session.get('role') === 'seller')
+                    <a href="/seller/add-product">Tambah Item</a>
+                @endif
+            </div>
+        </div>
+        <div class="nav-right">
+            @if(session.get('isLoggedIn'))
+                <a href="/wishlist" class="nav-wishlist">❤️ Wishlist</a>
+                <div class="nav-user-section">
+                    <span class="user-badge">
+                        @if(session.get('role') === 'seller')
+                            🏪 Penjual
+                        @else
+                            👤 Pembeli
+                        @endif
+                    </span>
+                    <a href="/logout" class="btn btn-logout">Logout</a>
+                </div>
+            @else
+                <a href="/login" class="btn btn-primary">Login</a>
+            @endif
+        </div>
+    </nav>
+</header>

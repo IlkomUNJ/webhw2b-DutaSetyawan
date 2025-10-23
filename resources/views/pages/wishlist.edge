@@ -1,0 +1,55 @@
+@layout.app({ title: 'My Wishlist' })
+  @slot('main')
+  
+    <main>
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">Wishlist Saya</h1>
+                
+                @if(!session.get('isLoggedIn'))
+                    <div class="wishlist-login-prompt">
+                        <p>Silakan <a href="/login" class="link">login</a> untuk melihat wishlist Anda.</p>
+                    </div>
+                @else
+                    <div class="wishlist-info">
+                        <p>Anda memiliki <strong>{{ count }}</strong> item di wishlist</p>
+                        @if(count > 0)
+                            <a href="/wishlist/clear" class="btn btn-logout" onclick="return confirm('Apakah Anda yakin ingin menghapus semua item?')">Bersihkan Wishlist</a>
+                        @endif
+                    </div>
+
+                    @if(wishlist.length > 0)
+                        <div class="wishlist-items">
+                            @each(item in wishlist)
+                                <div class="wishlist-item">
+                                    <div class="wishlist-item-image">
+                                        <img src="/images/{{ item.image }}" alt="{{ item.name }}">
+                                    </div>
+                                    <div class="wishlist-item-content">
+                                        <h3>{{ item.name }}</h3>
+                                        <div class="wishlist-item-price">Rp {{ item.price.toLocaleString('id-ID') }}</div>
+                                        <div class="wishlist-item-actions">
+                                            <form action="/wishlist/remove" method="POST" style="display: inline;">
+                                                {{ csrfField() }}
+                                                <input type="hidden" name="productId" value="{{ item.id }}">
+                                                <button type="submit" class="btn btn-logout">Hapus</button>
+                                            </form>
+                                            <a href="#" class="btn btn-primary">Beli Sekarang</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endeach
+                        </div>
+                    @else
+                        <div class="no-wishlist">
+                            <p>Wishlist Anda kosong.</p>
+                            <a href="/products" class="btn btn-primary">Jelajahi Produk</a>
+                        </div>
+                    @endif
+                @endif
+            </div>
+        </section>
+    </main>
+
+@endslot
+@end

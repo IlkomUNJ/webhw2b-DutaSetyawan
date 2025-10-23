@@ -1,0 +1,69 @@
+@layout.app({ title: 'Search Results' })
+  @slot('main')
+  
+    <main>
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">Hasil Pencarian</h1>
+                
+                <!-- Search Form -->
+                <div class="search-filter-container">
+                    <form action="/search" method="GET" class="search-form">
+                        <div class="search-input-group">
+                            <input 
+                                type="text" 
+                                name="keyword" 
+                                placeholder="Cari nama pedang..." 
+                                value="{{ keyword }}"
+                                class="search-input"
+                            >
+                            <button type="submit" class="btn btn-primary">Cari</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Results -->
+                <div class="search-results-info">
+                    <p>
+                        @if(keyword)
+                            Hasil pencarian untuk "<strong>{{ keyword }}</strong>" - 
+                        @endif
+                        <strong>{{ results.length }}</strong> produk ditemukan
+                    </p>
+                </div>
+
+                @if(results.length > 0)
+                    <div class="product-grid">
+                        @each(product in results)
+                            <div class="product-card">
+                                <img src="/images/{{ product.image }}" alt="{{ product.name }}">
+                                <div class="product-card-content">
+                                    <h3>{{ product.name }}</h3>
+                                    <p>{{ product.description }}</p>
+                                    <div class="product-price">Rp {{ product.price.toLocaleString('id-ID') }}</div>
+                                    <div class="product-actions">
+                                        <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Beli Sekarang</a>
+                                        @if(session.get('isLoggedIn'))
+                                            <form action="/wishlist/add" method="POST" style="display: inline;">
+                                                {{ csrfField() }}
+                                                <input type="hidden" name="productId" value="{{ product.id }}">
+                                                <button type="submit" class="btn btn-wishlist" title="Tambah ke Wishlist">❤️</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endeach
+                    </div>
+                @else
+                    <div class="no-results">
+                        <p>Tidak ada produk yang sesuai dengan kriteria pencarian Anda.</p>
+                        <a href="/products" class="btn btn-primary">Kembali ke Koleksi</a>
+                    </div>
+                @endif
+            </div>
+        </section>
+    </main>
+
+@endslot
+@end

@@ -1,0 +1,55 @@
+@layout.app({ title: 'Our Products' })
+  @slot('main')
+  
+    <main>
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">Koleksi Lengkap Kami</h1>
+                
+                <!-- Quick Search -->
+                <div class="quick-search-container">
+                    <form action="/search" method="GET" class="quick-search-form">
+                        <input 
+                            type="text" 
+                            name="keyword" 
+                            placeholder="Cari pedang..." 
+                            class="search-input"
+                        >
+                        <button type="submit" class="btn btn-primary">Cari</button>
+                        <a href="/search" class="btn btn-outline">Filter Lanjutan</a>
+                    </form>
+                </div>
+
+                <div class="product-grid">
+                    
+                    @if(products && products.length > 0)
+                        @each(product in products)
+                            <div class="product-card">
+                                <img src="/images/{{ product.image }}" alt="{{ product.name }}">
+                                <div class="product-card-content">
+                                    <h3>{{ product.name }}</h3>
+                                    <p>{{ product.description }}</p>
+                                    <div class="product-price">Rp {{ product.price.toLocaleString('id-ID') }}</div>
+                                    <div class="product-actions">
+                                        <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Beli Sekarang</a>
+                                        @if(session.get('isLoggedIn'))
+                                            <form action="/wishlist/add" method="POST" style="display: inline;">
+                                                {{ csrfField() }}
+                                                <input type="hidden" name="productId" value="{{ product.id }}">
+                                                <button type="submit" class="btn btn-wishlist" title="Tambah ke Wishlist">❤️</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endeach
+                    @else
+                        <p>Tidak ada produk yang tersedia.</p>
+                    @endif
+                </div>
+            </div>
+        </section>
+    </main>
+
+@endslot
+@end

@@ -1,0 +1,48 @@
+@layout.app({ title: 'Login' })
+  @slot('main')
+  
+    <main>
+        <section class="section">
+            <div class="container">
+                <div class="login-container">
+                    <h1 class="section-title">Login Sword Emporium</h1>
+                    
+                    <div class="login-form-wrapper">
+                        <form action="/login" method="POST" class="login-form">
+                            {{ csrfField() }}
+                            
+                            <div class="form-group">
+                                <label for="role">Pilih Role:</label>
+                                <div class="role-selector">
+                                    <div class="role-option">
+                                        <input type="radio" id="user-role" name="role" value="user" required>
+                                        <label for="user-role" class="role-label">
+                                            <span class="role-icon">👤</span>
+                                            <span class="role-name">Pembeli</span>
+                                            <span class="role-desc">Belanja pedang impianmu</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="role-option">
+                                        <input type="radio" id="seller-role" name="role" value="seller" required>
+                                        <label for="seller-role" class="role-label">
+                                            <span class="role-icon">🏪</span>
+                                            <span class="role-name">Penjual</span>
+                                            <span class="role-desc">Jual koleksi perangmu</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary login-btn">Login Sekarang</button>
+                        </form>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+@endslot
+@end
